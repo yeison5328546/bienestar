@@ -1,0 +1,268 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    /* Identidad SENA: el verde institucional reemplaza la paleta de marca (antiguo indigo) */
+    --color-indigo-50: #f0faf2;
+    --color-indigo-100: #dcf3e1;
+    --color-indigo-200: #b8e8c5;
+    --color-indigo-300: #86d69f;
+    --color-indigo-400: #53c175;
+    --color-indigo-500: #39b54a;
+    --color-indigo-600: #2a9e3f;
+    --color-indigo-700: #237e35;
+    --color-indigo-800: #1f652e;
+    --color-indigo-900: #1a5228;
+    --color-indigo-950: #0b2f14;
+
+    /* Acentos institucionales adicionales */
+    --color-sena: #39b54a;
+    --color-sena-dark: #2a9e3f;
+    --color-sena-deep: #237e35;
+    --color-lemon: #f6c51a;
+    --color-lemon-deep: #d4a90e;
+
+    /* Animaciones sutiles */
+    --animate-fade-in: fade-in 0.5s ease both;
+    --animate-fade-in-up: fade-in-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    --animate-fade-in-left: fade-in-left 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    --animate-float: float 8s ease-in-out infinite;
+    --animate-float-slow: float 12s ease-in-out infinite;
+    --animate-float-reverse: float-reverse 18s ease-in-out infinite;
+
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(14px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fade-in-left {
+        from { opacity: 0; transform: translateX(-14px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-12px); }
+    }
+
+    @keyframes float-reverse {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(-18px, 18px) scale(0.96); }
+    }
+}
+
+@layer components {
+    .card-lift {
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .card-lift:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px -10px rgb(11 47 20 / 0.16);
+    }
+
+    .animate-enter {
+        animation: fade-in-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .stagger-1 { animation-delay: 40ms; }
+    .stagger-2 { animation-delay: 80ms; }
+    .stagger-3 { animation-delay: 120ms; }
+    .stagger-4 { animation-delay: 160ms; }
+    .stagger-5 { animation-delay: 200ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@layer theme {
+    .dark {
+        --color-slate-50: oklch(0.985 0 0);
+        --color-slate-100: oklch(0.97 0 0);
+        --color-slate-200: oklch(0.922 0 0);
+        --color-slate-300: oklch(0.87 0 0);
+        --color-slate-400: oklch(0.708 0 0);
+        --color-slate-500: oklch(0.556 0 0);
+        --color-slate-600: oklch(0.439 0 0);
+        --color-slate-700: oklch(0.371 0 0);
+        --color-slate-800: oklch(0.269 0 0);
+        --color-slate-900: oklch(0.205 0 0);
+        --color-slate-950: oklch(0.145 0 0);
+    }
+}
+
+/* ===== Selector de rango de fechas (flatpickr) ===== */
+.flatpickr-calendar {
+    font-family: var(--font-sans);
+    border: 1px solid var(--color-slate-200);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px -12px rgb(11 47 20 / 0.2);
+    padding: 6px;
+    width: auto;
+    min-width: 300px;
+}
+
+.flatpickr-calendar:before,
+.flatpickr-calendar:after {
+    border-bottom-color: var(--color-slate-200);
+}
+
+.flatpickr-months .flatpickr-month {
+    color: var(--color-slate-900);
+}
+
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+    fill: var(--color-slate-500);
+}
+
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover {
+    fill: var(--color-sena);
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowUp:after {
+    border-bottom-color: var(--color-slate-500);
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowDown:after {
+    border-top-color: var(--color-slate-500);
+}
+
+.flatpickr-weekdays {
+    color: var(--color-slate-500);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.flatpickr-day {
+    border-radius: 8px;
+    color: var(--color-slate-700);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.flatpickr-day:hover {
+    background: var(--color-sena);
+    color: #fff;
+    border-color: transparent;
+}
+
+.flatpickr-day.today {
+    border-color: var(--color-sena);
+    font-weight: 700;
+    color: var(--color-sena);
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+    background: var(--color-sena);
+    border-color: var(--color-sena);
+    color: #fff;
+    box-shadow: none;
+}
+
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+    background: var(--color-sena-dark);
+    border-color: var(--color-sena-dark);
+}
+
+.flatpickr-day.inRange {
+    background: var(--color-indigo-100);
+    border-color: transparent;
+    color: var(--color-slate-800);
+    box-shadow: none;
+}
+
+.flatpickr-day.startRange + .endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.selected.startRange,
+.flatpickr-day.startRange:not(.selected) {
+    box-shadow: none;
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+    color: var(--color-slate-300);
+}
+
+.flatpickr-time input:hover,
+.flatpickr-time .flatpickr-am-pm:hover {
+    background: var(--color-indigo-100);
+}
+
+.dark .flatpickr-calendar {
+    background: var(--color-slate-900);
+    border-color: var(--color-slate-700);
+}
+
+.dark .flatpickr-calendar:before,
+.dark .flatpickr-calendar:after {
+    border-bottom-color: var(--color-slate-700);
+}
+
+.dark .flatpickr-months .flatpickr-month {
+    color: var(--color-slate-100);
+}
+
+.dark .flatpickr-weekdays {
+    color: var(--color-slate-400);
+}
+
+.dark .flatpickr-day {
+    color: var(--color-slate-300);
+}
+
+.dark .flatpickr-day:hover:not(.selected):not(.startRange):not(.endRange) {
+    background: var(--color-sena);
+    color: #fff;
+}
+
+.dark .flatpickr-day.today {
+    color: var(--color-sena);
+}
+
+.dark .flatpickr-day.inRange {
+    background: var(--color-slate-800);
+    color: var(--color-slate-200);
+}
+
+.dark .flatpickr-day.flatpickr-disabled,
+.dark .flatpickr-day.flatpickr-disabled:hover {
+    color: var(--color-slate-600);
+}
+
+.dark .flatpickr-current-month .flatpickr-monthDropdown-months {
+    color: var(--color-slate-100);
+}
+
+.dark .flatpickr-current-month .flatpickr-monthDropdown-months option {
+    background: var(--color-slate-900);
+    color: var(--color-slate-100);
+}

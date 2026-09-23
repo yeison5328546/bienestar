@@ -1,0 +1,52 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "php artisan config:cache &&
+             php artisan route:cache &&
+             php artisan event:cache &&
+             php artisan view:cache &&
+             exec php -d opcache.enable_cli=1 -d opcache.memory_consumption=128 -d opcache.max_accelerated_files=20000 -d opcache.validate_timestamps=1 -d opcache.revalidate_freq=0 artisan serve --host=0.0.0.0 --port=8000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: '${DB_DATABASE:-laravel}'
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-secret}'
+      MYSQL_PASSWORD: '${DB_PASSWORD:-secret}'
+      MYSQL_USER: '${DB_USERNAME:-sail}'
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-secret}'
+    depends_on:
+      - db
+
+volumes:
+  dbdata:
+    driver: local
